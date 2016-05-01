@@ -1,0 +1,29 @@
+{
+  "name": "tmp.cool",
+  "version": "0.0.1",
+  "description": "This is the source code repository for temporary email telegram bot.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/emreler/tmp-cool-mail.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/emreler/tmp-cool-mail/issues"
+  },
+  "homepage": "https://gitlab.com/emreler/tmp-cool-mail#README",
+  "dependencies": {
+    "bluebird": "^3.3.5",
+    "express": "^4.13.4",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0"
+  }
+}
