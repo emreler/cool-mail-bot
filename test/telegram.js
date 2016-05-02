@@ -1,7 +1,9 @@
 var chai = require('chai');
 var assert = chai.assert;
 var config = require('../config');
-var Telegram = require('../lib/telegram');
+var Storage = require('../app/storage');
+
+//var Telegram = require('../lib/telegram');
 
 // chai.use(require("chai-as-promised"));
 
@@ -21,14 +23,32 @@ describe('Telegram', function() {
 
                 it('should fail sending message with invalid chatID', function (done) {
                     return telegram.sendMessage('123asd', 'foo')
-                        .catch(function (err) {
-                            done();
-                        })
                         .then(function () {
-                            throw new Error();
+                            return done(new Error());
+                        })
+                        .catch(function () {
+                            done();
                         })
                 });
             });
         });
     });
+});
+
+describe.only('Storage', function () {
+    this.timeout(5000);
+    var storage;
+
+    before(function () {
+        storage = new Storage(config);
+        
+    });
+
+    it('should create user', function () {
+        return storage.createUser(123);
+    });
+
+    it('should find user', function () {
+        return storage.findByChatID(123);
+    })
 });
