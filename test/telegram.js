@@ -21,11 +21,11 @@ describe('Telegram', function() {
 
                 it('should fail sending message with invalid chatID', function (done) {
                     return telegram.sendMessage('123asd', 'foo')
-                        .then(function () {
-                            throw new Error();
-                        })
                         .catch(function (err) {
                             done();
+                        })
+                        .then(function () {
+                            throw new Error();
                         })
                 });
             });
