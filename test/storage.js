@@ -1,37 +1,22 @@
-var chai = require('chai');
-var assert = chai.assert;
-var validator = require('validator');
+const chai = require('chai');
+const assert = chai.assert;
+const validator = require('validator');
 
-var config = require('../config');
+const config = require('../config');
 
 const Storage = require('../app/storage');
-const Service = require('../app/service');
-
-const storage = new Storage(config);
-const service = new Service(config, storage);
-
-//var Telegram = require('../lib/telegram');
-
-// chai.use(require("chai-as-promised"));
-
-describe('Service', function () {
-
-    it('should create random and valid e-mail address', function () {
-        var address1 = service.generateAddress();
-        var address2 = service.generateAddress();
-
-        assert.notEqual(address1, address2);
-
-        assert.isTrue(validator.isEmail(address1));
-        assert.isTrue(validator.isEmail(address2));
-    });
-});
 
 describe('Storage', function () {
-    this.timeout(5000);
+    this.timeout(10000);
 
     var chatId = 12345;
-    var email = service.generateAddress();
+    var email = 'foo@tmp.cool';
+
+    var storage;
+
+    before(function () {
+        storage = new Storage(config);
+    });
 
     it('should create user', function () {
         return storage.createUser(chatId, new Date());
