@@ -14,7 +14,7 @@ Storage.prototype.createUser = function (chatID, createdAt) {
 };
 
 Storage.prototype.setEmail = function (chatId, email) {
-    return this.User.update({chatId: chatId}, {email: email});
+    return this.User.update({chatId: chatId}, {email: email}).exec();
 };
 
 Storage.prototype.findByChatID = function (chatID) {
@@ -29,7 +29,7 @@ Storage.prototype.findByChatID = function (chatID) {
 };
 
 Storage.prototype.deleteUser = function (chatId) {
-    return this.User.remove({chatId: chatId});
+    return this.User.remove({chatId: chatId}).exec();
 };
 
 module.exports = Storage;

@@ -1,20 +1,31 @@
-var config = require('./config');
-var TelegramBot = require('node-telegram-bot-api');
-var service = require('./app/service')(config);
+const config = require('./config');
 
-var bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling});
+const Storage = require('./app/storage');
+const Service = require('./app/service');
 
-bot.onText(/^\/echo (.+)/, function (msg, match) {
-    var fromId = msg.from.id;
+const TelegramBot = require('node-telegram-bot-api');
+const util = require('util');
+
+const storage = new Storage(config);
+const service = new Service(config, storage);
+const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling});
+
+bot.onText(/^\/start/, function (msg) {
+    // new user comes in
     var chatId = msg.chat.id;
 
-    console.log(fromId, chatId);
-
-    bot.sendMessage(fromId, match[1]);
+    bot.sendMessage(chatId, 'Welcome aboard!');
+    
+    service.createUser(chatId);
 });
 
-bot.onText(/^\/generate */, function (msg, match) {
+bot.onText(/^\/generate/, function (msg, match) {
     var chatId = msg.chat.id;
+    var email = service.generateAddress();
 
-    service.generateAddress(chatId);
+    var reply = util.format('Your new email address: %s', email);
+
+    bot.sendMessage(chatId, reply);
+
+    service.assignEmail(chatId, email);
 });
