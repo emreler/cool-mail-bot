@@ -29,6 +29,12 @@ bot.onText(/^\/start/, function (msg) {
     service.createUser(chatId);
 });
 
+bot.onText(/.*/, function (msg) {
+    var chatId = msg.chat.id;
+
+    return service.logMessage(chatId, msg.text).then();
+});
+
 bot.onText(/^\/generate/, function (msg) {
     // generate new random email address for user
 

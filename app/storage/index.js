@@ -45,6 +45,13 @@ Storage.prototype.addIncomingEmail = function (chatId, from, subject, body, date
     return this.User.findOneAndUpdate({chatId: chatId}, {$push: {inbox: obj}, $inc: {inboxCount: 1}, lastEmail: date});
 };
 
+Storage.prototype.addMessageLog = function (chatId, message) {
+    return this.User.findOneAndUpdate({chatId: chatId}, {$push: {messages: {
+        date: new Date(),
+        message: message
+    }}});
+};
+
 Storage.prototype.deleteUser = function (chatId) {
     return this.User.remove({chatId: chatId}).exec();
 };

@@ -86,7 +86,10 @@ Service.prototype.sendTestEmail = function (chatId) {
                 }
             });
         })
+};
 
+Service.prototype.logMessage = function (chatId, msg) {
+    return this.storage.addMessageLog(chatId, msg);
 };
 
 module.exports = Service;
