@@ -37,7 +37,8 @@ bot.onText(/^\/generate/, function (msg) {
 
     bot.sendMessage(chatId, `Your new email address: ${email}\nYou can start receiving emails from this address!
 
-Click /test to receive some test email sent to this address. It really sends email :)`);
+Click /test to receive some test email sent to this address.
+P.S. It really sends email :)`);
 
     service.assignEmail(chatId, email);
 });
