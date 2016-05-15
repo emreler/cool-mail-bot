@@ -1,8 +1,9 @@
-var chai = require('chai');
-var assert = chai.assert;
-var validator = require('validator');
+const chai = require('chai');
+const assert = chai.assert;
+const validator = require('validator');
+const TelegramBot = require('node-telegram-bot-api');
 
-var config = require('../config');
+const config = require('../config');
 
 const Storage = require('../app/storage');
 const Service = require('../app/service');
@@ -10,11 +11,14 @@ const Service = require('../app/service');
 describe('Service', function () {
     this.timeout(10000);
 
-    var storage, service, chatId = 123;
+    var storage, service, bot, chatId = 130358557, email;
 
     before(function () {
+        bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling});
         storage = new Storage(config);
-        service = new Service(config, storage);
+        service = new Service(config, storage, bot);
+
+        return storage.deleteUser(chatId);
     });
 
     it('should create random and valid e-mail address', function () {
@@ -32,7 +36,14 @@ describe('Service', function () {
     });
 
     it('should assign new random email to user', function () {
-        return service.assignEmail(chatId);
+        return service.assignEmail(chatId)
+            .then(function (res) {
+                email = res.email;
+            });
+    });
+
+    it('should handle incoming email', function () {
+        return service.handleEmail([{address: 'emrekayan@gmail.com'}], [{address: email}], 'somecontent');
     });
     
     after(function () {
