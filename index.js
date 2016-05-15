@@ -49,5 +49,5 @@ mailin.on('message', function (connection, data, content) {
     // data.to has receiver info
     // data.text has plain text content
 
-    service.handleEmail(data.from, data.to, data.text);
+    service.handleEmail(data.from, data.to, data.subject, data.text);
 });

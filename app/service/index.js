@@ -33,7 +33,7 @@ Service.prototype.createUser = function (chatId) {
         });
 };
 
-Service.prototype.handleEmail = function (from, to, content) {
+Service.prototype.handleEmail = function (from, to, subject, content) {
     var recipient = to.find(function (recipient) {
         return recipient.address.endsWith('@tmp.cool');
     });
@@ -52,9 +52,9 @@ Service.prototype.handleEmail = function (from, to, content) {
 
     return this.storage.findByEmail(recipient.address)
         .then(function (user) {
-            var reply = util.format('Incoming message from %s to %s with content %s', from.address, recipient.address, content);
+            var reply = util.format('You have a new email!\n\nFrom: <b>%s</b>\nSubject: <b>%s</b>\n%s', from.address, subject, content);
 
-            return self.bot.sendMessage(user.chatId, reply);
+            return self.bot.sendMessage(user.chatId, reply, {parse_mode: 'HTML', disable_web_page_preview: true});
         });
 };
 
