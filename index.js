@@ -61,7 +61,7 @@ bot.onText(/^\/about/, function (msg) {
 bot.onText(/^\/version/, function (msg) {
     var chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, `Current version: <b>${pkg.version}</b>`, {parse_mode: 'HTML'});
+    bot.sendMessage(chatId, `Current version: <code>${pkg.version}</code>`, {parse_mode: 'HTML'});
 });
 
 mailin.start({
