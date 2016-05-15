@@ -17,8 +17,19 @@ Storage.prototype.setEmail = function (chatId, email) {
     return this.User.update({chatId: chatId}, {email: email}).exec();
 };
 
-Storage.prototype.findByChatID = function (chatID) {
-    return this.User.findOne({chatId: chatID}).lean().exec()
+Storage.prototype.findByChatId = function (chatId) {
+    return this.User.findOne({chatId: chatId}).lean().exec()
+        .then((user) => {
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            return user;
+        })
+};
+
+Storage.prototype.findByEmail = function (email) {
+    return this.User.findOne({email: email}).lean().exec()
         .then((user) => {
             if (!user) {
                 throw new Error('User not found');

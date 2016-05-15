@@ -16,6 +16,7 @@ describe('Storage', function () {
 
     before(function () {
         storage = new Storage(config);
+        return storage.deleteUser(chatId);
     });
 
     it('should create user', function () {
@@ -38,10 +39,17 @@ describe('Storage', function () {
         return storage.setEmail(chatId, email);
     });
 
-    it('should find user', function () {
-        return storage.findByChatID(chatId)
+    it('should find user by chat id', function () {
+        return storage.findByChatId(chatId)
             .then(function (user) {
                 assert.equal(user.email, email);
+            });
+    });
+
+    it('should find user by email', function () {
+        return storage.findByEmail(email)
+            .then(function (user) {
+                assert.equal(user.chatId, chatId);
             });
     });
 
