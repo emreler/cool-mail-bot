@@ -52,9 +52,9 @@ Service.prototype.handleEmail = function (from, to, subject, content) {
 
     return this.storage.findByEmail(recipient.address)
         .then(function (user) {
-            var reply = util.format('You have a new email!\n\nFrom: <b>%s</b>\nSubject: <b>%s</b>\n%s', from.address, subject, content);
+            var reply = util.format('You have a new email!\n\nFrom: <b>%s</b>\nSubject: <b>%s</b>\n\n%s', from.address, subject, content);
 
-            return self.bot.sendMessage(user.chatId, reply, {parse_mode: 'HTML', disable_web_page_preview: true});
+            self.bot.sendMessage(user.chatId, reply, {parse_mode: 'HTML', disable_web_page_preview: true});
         });
 };
 

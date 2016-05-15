@@ -1,4 +1,5 @@
 const config = require('./config');
+const pkg = require('./package.json');
 
 const Storage = require('./app/storage');
 const Service = require('./app/service');
@@ -37,6 +38,12 @@ bot.onText(/^\/generate/, function (msg) {
     bot.sendMessage(chatId, reply);
 
     service.assignEmail(chatId, email);
+});
+
+bot.onText(/^\/version/, function (msg) {
+    var chatId = msg.chat.id;
+
+    bot.sendMessage(chatId, `Current version: <b>${pkg.version}</b>`, {parse_mode: 'HTML'});
 });
 
 mailin.start({
