@@ -1,5 +1,6 @@
 const Storage = require('../storage');
 const words = require('../lib/enDictionary');
+const validator = require('validator');
 
 const util = require('util');
 const Chance = require('chance');
@@ -70,6 +71,10 @@ Service.prototype.sendTestEmail = function (chatId) {
     var self = this;
     this.storage.findByChatId(chatId)
         .then(function (user) {
+            if (!user.email || !validator.isEmail(user.email)) {
+                return self.bot.sendMessage(chatId, 'It seems you don\'t have any email address yet. How about /generate one?');
+            }
+
             self.sendgrid.send({
                 to: user.email,
                 from: 'it-works@tmp.cool',

@@ -1,6 +1,6 @@
 {
   "name": "tmp.cool",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "This is the source code repository for temporary email telegram bot.",
   "main": "index.js",
   "directories": {
