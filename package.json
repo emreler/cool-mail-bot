@@ -23,11 +23,13 @@
   "homepage": "https://gitlab.com/emreler/tmp-cool-mail#README",
   "dependencies": {
     "bluebird": "^3.3.5",
+    "chance": "^1.0.3",
     "express": "^4.13.4",
     "mailin": "^3.0.3",
     "mongoose": "^4.4.14",
     "node-telegram-bot-api": "^0.21.1",
     "request": "^2.72.0",
+    "sendgrid": "^2.0.0",
     "validator": "^5.2.0"
   },
   "devDependencies": {

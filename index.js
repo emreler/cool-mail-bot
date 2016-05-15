@@ -9,7 +9,8 @@ const mailin = require('mailin');
 const util = require('util');
 
 const storage = new Storage(config);
-const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling, webHook: config.telegram.webHook});
+const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling,
+    webHook: config.telegram.webHook});
 
 if (config.telegram.webHook) {
     bot.setWebHook('https://tmp.cool/webhook/' + config.telegram.token);
@@ -22,7 +23,8 @@ bot.onText(/^\/start/, function (msg) {
 
     var chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, 'Welcome aboard!');
+    bot.sendMessage(chatId, 'Welcome aboard!\nYou can run /generate to create your first random email address.',
+        {parse_mode: 'HTML'});
     
     service.createUser(chatId);
 });
@@ -33,11 +35,17 @@ bot.onText(/^\/generate/, function (msg) {
     var chatId = msg.chat.id;
     var email = service.generateAddress();
 
-    var reply = util.format('Your new email address: %s', email);
+    bot.sendMessage(chatId, `Your new email address: ${email}\nYou can start receiving emails from this address!
 
-    bot.sendMessage(chatId, reply);
+Click /test to receive some test email sent to this address. It really sends email :)`);
 
     service.assignEmail(chatId, email);
+});
+
+bot.onText(/^\/test/, function (msg) {
+    var chatId = msg.chat.id;
+
+    service.sendTestEmail(chatId);
 });
 
 bot.onText(/^\/version/, function (msg) {
