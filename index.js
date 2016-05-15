@@ -8,7 +8,12 @@ const mailin = require('mailin');
 const util = require('util');
 
 const storage = new Storage(config);
-const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling});
+const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling, webHook: config.telegram.webHook});
+
+if (config.telegram.webHook) {
+    bot.setWebHook('https://tmp.cool/webhook/' + config.telegram.token);
+}
+
 const service = new Service(config, storage, bot);
 
 bot.onText(/^\/start/, function (msg) {
