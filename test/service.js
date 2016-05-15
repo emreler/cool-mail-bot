@@ -46,8 +46,6 @@ describe('Service', function () {
         return service.handleEmail([{address: 'emrekayan@gmail.com'}], [{address: email}], 'foosubhect', 'somecontent');
     });
 
-    
     after(function () {
-        return storage.deleteUser(chatId);
     });
 });

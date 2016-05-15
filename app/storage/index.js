@@ -39,6 +39,12 @@ Storage.prototype.findByEmail = function (email) {
         })
 };
 
+Storage.prototype.addIncomingEmail = function (chatId, from, subject, body, date) {
+    var obj = {from, subject, body, date};
+
+    return this.User.findOneAndUpdate({chatId: chatId}, {$push: {inbox: obj}, $inc: {inboxCount: 1}, lastEmail: date});
+};
+
 Storage.prototype.deleteUser = function (chatId) {
     return this.User.remove({chatId: chatId}).exec();
 };

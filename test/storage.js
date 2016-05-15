@@ -1,6 +1,7 @@
 const chai = require('chai');
 const assert = chai.assert;
 const validator = require('validator');
+const Promise = require('bluebird');
 
 const config = require('../config');
 
@@ -53,7 +54,25 @@ describe('Storage', function () {
             });
     });
 
+    it('should save incoming emails', function () {
+        return Promise.resolve()
+            .then(function () {
+                return storage.addIncomingEmail(chatId, 'some@mail.com', 'somecontent', 'somebodytext', new Date());
+            })
+            .then(function () {
+                return storage.addIncomingEmail(chatId, 'some@mail.com', 'somecontent', 'somebodytext', new Date());
+            })
+            .then(function () {
+                return storage.addIncomingEmail(chatId, 'some@mail.com', 'somecontent', 'somebodytext', new Date());
+            })
+            .then(function () {
+                return storage.findByChatId(chatId);
+            })
+            .then(function (user) {
+                assert.equal(3, user.inboxCount);
+            })
+    });
+
     it('should delete user', function () {
-        return storage.deleteUser(chatId);
     })
 });
