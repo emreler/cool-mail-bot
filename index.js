@@ -56,6 +56,7 @@ bot.onText(/^\/test/, function (msg) {
 });
 
 bot.onText(/^\/about/, function (msg) {
+    return;
     var chatId = msg.chat.id;
 
     bot.sendMessage(chatId, '<b>About Bot:</b> Cool Mail Bot enables you to create temporary random email addresses. Main intention is ' +

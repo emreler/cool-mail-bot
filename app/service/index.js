@@ -2,6 +2,7 @@ const Storage = require('../storage');
 const words = require('../lib/enDictionary');
 const validator = require('validator');
 
+const Promise = require('bluebird');
 const util = require('util');
 const Chance = require('chance');
 const chance = new Chance();
@@ -43,13 +44,13 @@ Service.prototype.handleEmail = function (from, to, subject, content) {
     });
 
     if (!recipient) {
-        console.error('No valid recipient domain', to);
+        return console.error('No valid recipient domain', to);
     }
 
     if (from instanceof Array && from.length === 1) {
         from = from[0];
     } else {
-        console.error('Invalid from field', from);
+        return console.error('Invalid from field', from);
     }
 
     var self = this;
@@ -58,12 +59,11 @@ Service.prototype.handleEmail = function (from, to, subject, content) {
         .then(function (user) {
             var reply = util.format('You have a new email!\n\nFrom: <b>%s</b>\nSubject: <b>%s</b>\n\n%s', from.address, subject, content);
 
-            self.bot.sendMessage(user.chatId, reply, {parse_mode: 'HTML', disable_web_page_preview: true})
-                .catch(function (err) {
-                    console.error(err);
-                });
+            var promArr = [];
+            promArr.push(self.bot.sendMessage(user.chatId, reply, {parse_mode: 'HTML', disable_web_page_preview: true}));
+            promArr.push(self.storage.addIncomingEmail(user.chatId, from.address, subject, content, new Date()));
 
-            return self.storage.addIncomingEmail(user.chatId, from.address, subject, content, new Date());
+            return Promise.all(promArr);
         });
 };
 
