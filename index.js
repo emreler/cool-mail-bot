@@ -9,8 +9,11 @@ const mailin = require('mailin');
 const util = require('util');
 
 const storage = new Storage(config);
-const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling,
-    webHook: config.telegram.webHook});
+//const bot = new TelegramBot(config.telegram.token, {polling: config.telegram.polling,
+ //   webHook: config.telegram.webHook});
+
+const XTelegramBot = require('./app/service/telegram');
+const bot = new XTelegramBot(config);
 
 if (config.telegram.webHook) {
     bot.setWebHook('https://tmp.cool/webhook/' + config.telegram.token);
@@ -43,16 +46,26 @@ bot.onText(/^\/generate/, function (msg) {
 
     bot.sendMessage(chatId, `Your new email address: ${email}\nYou can start receiving emails from this address!
 
-Click /test to receive some test email sent to this address.
-P.S. It really sends email 😉`);
+Click button below to receive some test email sent to this address.
+P.S. It really sends email 😉`, {reply_markup: {
+        inline_keyboard: [
+            [{text: 'Send', callback_data: 'test'}]
+        ]
+    }});
 
     service.assignEmail(chatId, email);
 });
 
-bot.onText(/^\/test/, function (msg) {
-    var chatId = msg.chat.id;
+bot.onCallback(/^test/, function (msg) {
+    var chatId = msg.from.id;
 
-    service.sendTestEmail(chatId);
+    service.sendTestEmail(chatId)
+        .then(function () {
+            return bot.answerCallbackQuery(msg.id, 'Test email is sent!', false);
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
 });
 
 bot.onText(/^\/about/, function (msg) {

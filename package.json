@@ -24,6 +24,7 @@
   "dependencies": {
     "bluebird": "^3.3.5",
     "chance": "^1.0.3",
+    "debug": "^2.2.0",
     "express": "^4.13.4",
     "mailin": "^3.0.3",
     "mongoose": "^4.4.14",

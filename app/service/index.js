@@ -70,23 +70,26 @@ Service.prototype.handleEmail = function (from, to, subject, content) {
 
 Service.prototype.sendTestEmail = function (chatId) {
     var self = this;
-    this.storage.findByChatId(chatId)
-        .then(function (user) {
-            if (!user.email || !validator.isEmail(user.email)) {
-                return self.bot.sendMessage(chatId, 'It seems you don\'t have any email address yet. How about /generate one?');
-            }
-
-            self.sendgrid.send({
-                to: user.email,
-                from: 'it-works@tmp.cool',
-                subject: `${chance.capitalize(chance.word({syllables: 2}))} ${chance.capitalize(chance.word({syllables: 2}))}`,
-                text: chance.paragraph({sentences: 2})
-            }, function(err) {
-                if (err) {
-                    console.error(err);
+    return new Promise(function (resolve, reject) {
+        self.storage.findByChatId(chatId)
+            .then(function (user) {
+                if (!user.email || !validator.isEmail(user.email)) {
+                    return self.bot.sendMessage(chatId, 'It seems you don\'t have any email address yet. How about /generate one?');
                 }
-            });
-        })
+
+                self.sendgrid.send({
+                    to: user.email,
+                    from: 'it-works@tmp.cool',
+                    subject: `${chance.capitalize(chance.word({syllables: 2}))} ${chance.capitalize(chance.word({syllables: 2}))}`,
+                    text: chance.paragraph({sentences: 2})
+                }, function(err) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            })
+    });
 };
 
 Service.prototype.logMessage = function (chatId, msg) {

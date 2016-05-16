@@ -8,6 +8,20 @@ const config = require('../config');
 const Storage = require('../app/storage');
 const Service = require('../app/service');
 
+const XTelegramBot = require('../app/service/telegram');
+
+describe('XTelegramBot', function () {
+    var bot, chatId = 130358557;
+
+    before(function () {
+        bot = new XTelegramBot(config);
+    });
+
+    it('send msg', function () {
+        return bot.sendMessage(chatId, 'yes');
+    })
+});
+
 describe('Service', function () {
     this.timeout(10000);
 
