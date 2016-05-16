@@ -43,13 +43,13 @@ Service.prototype.handleEmail = function (from, to, subject, content) {
     });
 
     if (!recipient) {
-        throw new Error('No valid recipient domain');
+        console.error('No valid recipient domain', to);
     }
 
     if (from instanceof Array && from.length === 1) {
         from = from[0];
     } else {
-        throw new Error('Invalid from field');
+        console.error('Invalid from field', from);
     }
 
     var self = this;
