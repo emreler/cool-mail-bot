@@ -25,17 +25,11 @@ Service.prototype.assignEmail = function (chatId, email = this.generateAddress()
     return this.storage.setEmail(chatId, email)
         .then(function () {
             return {email: email};
-        })
-        .catch(function (err) {
-            console.error(err);
         });
 };
 
 Service.prototype.createUser = function (chatId) {
-    return this.storage.createUser(chatId, new Date())
-        .catch(function (err) {
-            console.error(err);
-        });
+    return this.storage.createUser(chatId, new Date());
 };
 
 Service.prototype.handleEmail = function (from, to, subject, content) {
