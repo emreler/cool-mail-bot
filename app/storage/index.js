@@ -9,8 +9,8 @@ var Storage = function (config) {
     this.User = mongoose.model('User', new mongoose.Schema({}, {strict: false, versionKey: false}));
 };
 
-Storage.prototype.createUser = function (chatID, createdAt) {
-    return this.User.create({chatId: chatID, createdAt: createdAt});
+Storage.prototype.createUser = function (chatId, userInfo, createdAt) {
+    return this.User.create({chatId: chatId, userInfo: userInfo, createdAt: createdAt});
 };
 
 Storage.prototype.setEmail = function (chatId, email) {

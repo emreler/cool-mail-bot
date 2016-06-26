@@ -28,8 +28,8 @@ Service.prototype.assignEmail = function (chatId, email = this.generateAddress()
         });
 };
 
-Service.prototype.createUser = function (chatId) {
-    return this.storage.createUser(chatId, new Date());
+Service.prototype.createUser = function (chatId, userInfo) {
+    return this.storage.createUser(chatId, userInfo, new Date());
 };
 
 Service.prototype.handleEmail = function (from, to, subject, content) {

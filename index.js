@@ -24,12 +24,13 @@ const service = new Service(config, storage, bot);
 bot.onText(/^\/start/, function (msg) {
     // new user comes in
 
-    var chatId = msg.chat.id;
+    var chatId = msg.from.id;
+    var userInfo = msg.from;
 
     bot.sendMessage(chatId, 'Welcome aboard!\nYou can run /generate to create your first random email address.',
         {parse_mode: 'HTML'});
     
-    service.createUser(chatId);
+    service.createUser(chatId, userInfo);
 });
 
 bot.onText(/.*/, function (msg) {
